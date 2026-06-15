@@ -13,7 +13,18 @@ export class Input {
     canvas.addEventListener("mousedown", this.requestLock);
     document.addEventListener("pointerlockchange", this.onLockChange);
     document.addEventListener("mousemove", this.onMouseMove);
+    // Right-click would open the context menu and swallow the matching keyup,
+    // leaving a movement key "stuck" down. Suppress it over the game canvas.
+    canvas.addEventListener("contextmenu", (e) => e.preventDefault());
+    // If focus is lost (alt-tab, menu, etc.) keyup events can be missed — drop
+    // all held keys so the player can't keep drifting.
+    window.addEventListener("blur", this.clearKeys);
   }
+
+  private clearKeys = () => {
+    this.keys.clear();
+    this.justPressed.clear();
+  };
 
   private onKeyDown = (e: KeyboardEvent) => {
     const k = e.code;
@@ -33,6 +44,7 @@ export class Input {
 
   private onLockChange = () => {
     this.locked = document.pointerLockElement === this.canvas;
+    if (!this.locked) this.clearKeys(); // avoid keys sticking when control is lost
   };
 
   private onMouseMove = (e: MouseEvent) => {

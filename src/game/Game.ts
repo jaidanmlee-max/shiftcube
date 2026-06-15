@@ -11,6 +11,7 @@ import { COLORS, FALL_DEATH_Y } from "./config";
 type State = "menu" | "how" | "countdown" | "playing" | "paused" | "gameover";
 
 const DIFFICULTY_RAMP = 75; // seconds to reach max difficulty
+const SHOWCASE_TARGET = new THREE.Vector3(0, 2, 0); // cube center — framed on menu/game-over
 
 export class Game {
   private renderer: THREE.WebGLRenderer;
@@ -180,6 +181,7 @@ export class Game {
     this.audio.fall();
     setTimeout(() => this.audio.gameOver(), 300);
     this.state = "gameover";
+    this.player.velocity.set(0, 0, 0);
     this.input.unlock();
     const score = this.score();
     const newBest = this.ui.showGameOver(this.elapsed, score);
@@ -209,16 +211,19 @@ export class Game {
     switch (this.state) {
       case "countdown":
         this.updateCountdown(dt);
-        this.idleSpin(dt);
         break;
       case "playing":
         this.updatePlaying(dt);
         break;
       case "menu":
       case "how":
+        this.idleSpin(dt); // gentle showcase spin around the cube
+        break;
       case "paused":
+        this.camCtrl.update(dt, this.player.position); // hold the shot for a clean resume
+        break;
       case "gameover":
-        this.idleSpin(dt);
+        this.camCtrl.update(dt, SHOWCASE_TARGET); // steady frame on the cube — no drift
         break;
     }
 
@@ -227,9 +232,10 @@ export class Game {
   }
 
   private idleSpin(dt: number) {
-    // Gentle camera drift for non-gameplay screens.
+    // Gentle showcase spin around the cube (menu screens), independent of where
+    // the player happens to be.
     this.camCtrl.yaw += dt * 0.15;
-    this.camCtrl.update(dt, this.player.position);
+    this.camCtrl.update(dt, SHOWCASE_TARGET);
   }
 
   private updateCountdown(dt: number) {
