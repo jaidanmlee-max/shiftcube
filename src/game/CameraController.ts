@@ -1,11 +1,14 @@
 import * as THREE from "three";
-import { TOP_Y } from "./config";
+import { HALF, TOP_Y } from "./config";
+
+const FOLLOW_DIST = HALF * 3.6; // normal follow distance, scaled to cube size
+const ZOOM_DIST = HALF * 4.8; // pulled back during big cube rotations
 
 export class CameraController {
   yaw = 0;
   pitch = 0.62;
-  private distance = 11;
-  private targetDistance = 11;
+  private distance = FOLLOW_DIST;
+  private targetDistance = FOLLOW_DIST;
   private shake = 0;
   private sens = 0.0024;
 
@@ -22,7 +25,7 @@ export class CameraController {
   }
 
   setZoomedOut(zoom: boolean) {
-    this.targetDistance = zoom ? 14.5 : 11;
+    this.targetDistance = zoom ? ZOOM_DIST : FOLLOW_DIST;
   }
 
   update(dt: number, target: THREE.Vector3) {
@@ -55,8 +58,8 @@ export class CameraController {
   reset() {
     this.yaw = 0;
     this.pitch = 0.62;
-    this.distance = 11;
-    this.targetDistance = 11;
+    this.distance = FOLLOW_DIST;
+    this.targetDistance = FOLLOW_DIST;
     this.shake = 0;
   }
 }

@@ -1,8 +1,8 @@
 // Shared tuning constants and arena geometry.
 
-export const CUBELET = 2; // edge length of one cubelet
-export const GRID = [-2, 0, 2]; // cubelet center coordinates per axis
-export const HALF = 3; // half-extent of the whole cube -> top face is the [-3,3] square
+export const CUBELET = 3.5; // edge length of one cubelet — change this to resize the whole arena
+export const GRID = [-CUBELET, 0, CUBELET]; // cubelet center coordinates per axis
+export const HALF = CUBELET * 1.5; // half-extent of the whole cube -> top face is the [-HALF,HALF] square
 export const TOP_Y = HALF; // y of the top walking surface
 
 export const PLAYER_RADIUS = 0.45;

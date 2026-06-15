@@ -1,5 +1,8 @@
 import * as THREE from "three";
-import { COLORS, PLAYER_RADIUS } from "./config";
+import { COLORS, HALF, PLAYER_RADIUS } from "./config";
+
+const CANNON_RADIUS = HALF * 3.2; // orbit radius of the floating cannons
+const CANNON_HEIGHT = HALF * 2.2;
 
 interface Projectile {
   mesh: THREE.Mesh;
@@ -53,8 +56,8 @@ export class HazardManager {
 
   private positionCannons(dt: number) {
     this.cannonAngle += dt * 0.25;
-    const r = 9.5;
-    const y = 6.5;
+    const r = CANNON_RADIUS;
+    const y = CANNON_HEIGHT;
     this.cannons.forEach((c, i) => {
       const a = this.cannonAngle + (i * Math.PI) / 2;
       c.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
@@ -151,7 +154,7 @@ export class HazardManager {
       }
 
       // Expired or far away -> counts as dodged.
-      if (p.life <= 0 || p.mesh.position.length() > 40) {
+      if (p.life <= 0 || p.mesh.position.length() > HALF * 10) {
         if (!p.hit && active) this.onDodge();
         this.removeProjectile(i);
       }

@@ -131,8 +131,8 @@ export class CubeArena {
 
   /** Index (0..2) of the nearest grid cell to a world coordinate. */
   static cellIndex(coord: number): number {
-    if (coord < -1) return 0;
-    if (coord > 1) return 2;
+    if (coord < -CUBELET / 2) return 0;
+    if (coord > CUBELET / 2) return 2;
     return 1;
   }
 
@@ -169,7 +169,7 @@ export class CubeArena {
     this.group.add(rot.pivot);
     // Gather cubelets in this slice and parent them under the pivot at origin.
     for (const c of this.cubelets) {
-      if (Math.abs(c.position[rot.axis] - rot.value) < 0.5) {
+      if (Math.abs(c.position[rot.axis] - rot.value) < CUBELET * 0.4) {
         rot.cubelets.push(c);
         rot.pivot.attach(c); // preserves world transform
       }
@@ -184,9 +184,9 @@ export class CubeArena {
     for (const c of rot.cubelets) {
       this.group.attach(c);
       c.position.set(
-        Math.round(c.position.x / 2) * 2,
-        Math.round(c.position.y / 2) * 2,
-        Math.round(c.position.z / 2) * 2
+        Math.round(c.position.x / CUBELET) * CUBELET,
+        Math.round(c.position.y / CUBELET) * CUBELET,
+        Math.round(c.position.z / CUBELET) * CUBELET
       );
       c.rotation.set(
         Math.round(c.rotation.x / (Math.PI / 2)) * (Math.PI / 2),
