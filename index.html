@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShiftCube — survive the shifting cube</title>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="game"></canvas>
+
+      <!-- HUD -->
+      <div id="hud" class="hidden">
+        <div class="hud-row top">
+          <div class="hud-stat">
+            <span class="label">TIME</span>
+            <span id="hud-time" class="value">0.0</span>
+          </div>
+          <div class="hud-stat center">
+            <span class="label">SCORE</span>
+            <span id="hud-score" class="value">0</span>
+          </div>
+          <div class="hud-stat right">
+            <span class="label">BEST</span>
+            <span id="hud-best" class="value">0</span>
+          </div>
+        </div>
+        <div class="hud-row bottom">
+          <div class="dash-meter">
+            <span class="label">DASH</span>
+            <div class="bar"><div id="dash-fill" class="fill"></div></div>
+          </div>
+          <button id="pause-btn" class="ghost-btn">II</button>
+        </div>
+        <div id="warning-banner" class="warning hidden">⚠ CUBE SHIFTING ⚠</div>
+        <div id="countdown" class="countdown hidden"></div>
+      </div>
+
+      <!-- Main menu -->
+      <div id="menu" class="overlay">
+        <h1 class="title">SHIFT<span>CUBE</span></h1>
+        <p class="tagline">Survive the shifting Rubik's cube. Don't fall off.</p>
+        <div class="menu-buttons">
+          <button id="play-btn" class="neon-btn">PLAY</button>
+          <button id="how-btn" class="neon-btn secondary">HOW TO PLAY</button>
+        </div>
+        <p class="best-line">Best score: <span id="menu-best">0</span></p>
+        <p class="credits">Three.js · neon arcade prototype</p>
+      </div>
+
+      <!-- How to play -->
+      <div id="how" class="overlay hidden">
+        <h2 class="title small">HOW TO PLAY</h2>
+        <ul class="how-list">
+          <li><b>WASD</b> — move</li>
+          <li><b>Mouse</b> — orbit camera (click to lock)</li>
+          <li><b>Space</b> — jump</li>
+          <li><b>Shift</b> — dash (has cooldown)</li>
+          <li><b>R</b> — restart · <b>Esc</b> — pause</li>
+        </ul>
+        <p class="how-tip">
+          Tiles glow <span class="y">yellow</span> then <span class="r">red</span>
+          before a layer rotates — get off them, or get carried over the edge.
+          Dodge the neon cannonballs. Survive as long as you can.
+        </p>
+        <button id="how-back" class="neon-btn secondary">BACK</button>
+      </div>
+
+      <!-- Pause -->
+      <div id="pause" class="overlay hidden">
+        <h2 class="title small">PAUSED</h2>
+        <div class="menu-buttons">
+          <button id="resume-btn" class="neon-btn">RESUME</button>
+          <button id="restart-btn" class="neon-btn secondary">RESTART</button>
+          <button id="quit-btn" class="neon-btn secondary">QUIT TO MENU</button>
+        </div>
+      </div>
+
+      <!-- Game over -->
+      <div id="gameover" class="overlay hidden">
+        <h2 class="title small danger">YOU FELL</h2>
+        <div class="result">
+          <div class="result-stat"><span class="label">SURVIVED</span><span id="go-time" class="value">0.0s</span></div>
+          <div class="result-stat"><span class="label">SCORE</span><span id="go-score" class="value">0</span></div>
+          <div class="result-stat"><span class="label">BEST</span><span id="go-best" class="value">0</span></div>
+        </div>
+        <div id="newbest" class="newbest hidden">★ NEW HIGH SCORE ★</div>
+        <div class="menu-buttons">
+          <button id="again-btn" class="neon-btn">PLAY AGAIN</button>
+          <button id="menu-btn" class="neon-btn secondary">MAIN MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
